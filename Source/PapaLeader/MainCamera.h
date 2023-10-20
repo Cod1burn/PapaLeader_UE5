@@ -18,6 +18,8 @@ public:
 
 private:
 	float CameraRotateDirection;
+	float CameraAngle;
+	float CameraRotateSpeed;
 	
 protected:
 	// Called when the game starts or when spawned
@@ -40,6 +42,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void RotateCamera(float AxisValue);
+	void RotateCamera(float Direction);
 
 };

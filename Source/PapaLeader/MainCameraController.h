@@ -22,9 +22,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputMappingContext* MappingContext;
 
-	// Keyboard input action
+	/** Keyboard input actions **/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* MoveAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	class UInputAction* RotateAction;
+
 	
 protected:
 	virtual void BeginPlay() override;
@@ -33,4 +37,8 @@ protected:
 
 	/** Input handles for axis actions */
 	void CameraMove(const FInputActionValue &InputValue);
+
+	void CameraRotateStart(const FInputActionValue &InputValue);
+
+	void CameraRotateEnd();
 };

@@ -13,6 +13,7 @@ AMainCamera::AMainCamera()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = true;
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -21,11 +22,11 @@ AMainCamera::AMainCamera()
 	// Set up camera boom and set it to be the root component
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->TargetArmLength = 1400.f;
-	CameraBoom->SetUsingAbsoluteRotation(true);
 	CameraBoom->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f));
-	CameraBoom->SetupAttachment(RootComponent);
+	CameraBoom->SetUsingAbsoluteRotation(true);
 	CameraBoom->bDoCollisionTest = false; // Don't want to pull camera in when it collides with level
-	
+	SetRootComponent(CameraBoom);
+	RootComponent->SetMobility(EComponentMobility::Movable);
 
 	// Set up camera component
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
@@ -42,6 +43,8 @@ void AMainCamera::BeginPlay()
 {
 	Super::BeginPlay();
 	CameraRotateDirection = 0.f;
+	CameraAngle = 0.f;
+	CameraRotateSpeed = 100.f;
 	
 }
 
@@ -49,11 +52,15 @@ void AMainCamera::BeginPlay()
 void AMainCamera::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	CameraAngle += DeltaTime * CameraRotateDirection * CameraRotateSpeed;
+	// Rotate the camera boom horizontally
+	CameraBoom->SetRelativeRotation(FRotator(-60.f, CameraAngle, 0.f));
 
 }
 
-void AMainCamera::RotateCamera(float AxisValue)
+void AMainCamera::RotateCamera(float Direction)
 {
-	CameraRotateDirection = AxisValue;
+	CameraRotateDirection = Direction;
 }
+
 
