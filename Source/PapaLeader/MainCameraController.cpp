@@ -36,7 +36,6 @@ void AMainCameraController::SetupInputComponent()
 		EnhancedInput->BindAction(RotateAction, ETriggerEvent::Triggered, this, &AMainCameraController::CameraRotateStart);
 		EnhancedInput->BindAction(RotateAction, ETriggerEvent::Completed, this, &AMainCameraController::CameraRotateEnd);
 		EnhancedInput->BindAction(ZoomAction, ETriggerEvent::Triggered, this, &AMainCameraController::CameraZoomStart);
-		EnhancedInput->BindAction(ZoomAction, ETriggerEvent::Completed, this, &AMainCameraController::CameraZoomEnd);
 		UE_LOG(LogTemp, Display, TEXT("Binding MoveAction to CameraMove"));
 	}
 }
@@ -136,15 +135,6 @@ void AMainCameraController::CameraZoomStart(const FInputActionValue& InputValue)
 	if (AMainCamera* MainCamera = CastChecked<AMainCamera>(GetPawn()))
 	{
 		MainCamera->ZoomCamera(ZoomDirection);
-	}
-}
-
-
-void AMainCameraController::CameraZoomEnd()
-{
-	if (AMainCamera* MainCamera = CastChecked<AMainCamera>(GetPawn()))
-	{
-		MainCamera->ZoomCamera(0.f);
 	}
 }
 

@@ -58,6 +58,4 @@ protected:
 	void MouseCameraMove();
 
 	void CameraZoomStart(const FInputActionValue &InputValue);
-
-	void CameraZoomEnd();
 };

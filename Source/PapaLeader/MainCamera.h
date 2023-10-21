@@ -22,9 +22,14 @@ private:
 	float CameraRotateSpeed;
 
 	float CameraZoomDirection;
-	const float CameraZoomSpeed = 2000.f;
-	const float CameraBoomMaxLength = 2500.f;
-	const float CameraBoomMinLength = 700.f;
+	const float CameraZoomSpeed = 800.f;
+	const float CameraZoomAngleSpeed = 20.f;
+	/** A list of camera zoom lengths and angles to be set **/
+	
+	std::vector<float> CameraZoomLengths;
+	std::vector<float> CameraZoomAngles;
+	int CameraZoomIndex;
+	int TargetZoomIndex;
 	
 protected:
 	// Called when the game starts or when spawned
