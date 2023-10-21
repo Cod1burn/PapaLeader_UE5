@@ -43,12 +43,17 @@ void AMainCameraController::CameraMove(const FInputActionValue &InputValue)
 {
 	// Add Movement to the pawn by 2d value in input action
 	FVector2D Movement = InputValue.Get<FVector2d>();
-	// print out the movement value
 	
 	APawn* ControlledPawn = GetPawn();
 	if (ControlledPawn != nullptr)
 	{
-		ControlledPawn->AddMovementInput(FVector(Movement.X, Movement.Y, 0.f));
+		/** Move the pawn by the pawn facing direction **/
+		// Erase the Z component of the forward direction
+		FVector3d ForwardDirection = ControlledPawn->GetActorForwardVector();
+		ForwardDirection.Z = 0.f;
+		ForwardDirection.Normalize();
+		ControlledPawn->AddMovementInput(ForwardDirection, Movement.Y);
+		ControlledPawn->AddMovementInput(ControlledPawn->GetActorRightVector(), Movement.X);
 	}
 }
 
