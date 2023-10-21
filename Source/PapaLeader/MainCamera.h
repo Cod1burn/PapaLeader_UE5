@@ -20,6 +20,11 @@ private:
 	float CameraRotateDirection;
 	float CameraAngle;
 	float CameraRotateSpeed;
+
+	float CameraZoomDirection;
+	const float CameraZoomSpeed = 2000.f;
+	const float CameraBoomMaxLength = 2500.f;
+	const float CameraBoomMinLength = 700.f;
 	
 protected:
 	// Called when the game starts or when spawned
@@ -43,5 +48,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void RotateCamera(float Direction);
+
+	void ZoomCamera(float Direction);
 
 };

@@ -28,12 +28,16 @@ AMainCamera::AMainCamera()
 	SetRootComponent(CameraBoom);
 	RootComponent->SetMobility(EComponentMobility::Movable);
 
+	CameraZoomDirection = 0.f;
+
 	// Set up camera component
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	CameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 
 	// Set up movement component
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
+	// Print out the movement speed
+	UE_LOG(LogTemp, Display, TEXT("Movement Speed: %f"), MovementComponent->MaxSpeed);
 	
 
 }
@@ -52,15 +56,31 @@ void AMainCamera::BeginPlay()
 void AMainCamera::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	CameraAngle += DeltaTime * CameraRotateDirection * CameraRotateSpeed;
+	
 	// Rotate the camera boom horizontally
+	CameraAngle += DeltaTime * CameraRotateDirection * CameraRotateSpeed;
 	CameraBoom->SetRelativeRotation(FRotator(-60.f, CameraAngle, 0.f));
 
+	// Zoom in or out the camera by changing the camera boom length
+	if (CameraZoomDirection != 0.f)
+	{
+		CameraBoom->TargetArmLength += DeltaTime * CameraZoomDirection * CameraZoomSpeed;
+		
+		if (CameraBoom->TargetArmLength > CameraBoomMaxLength)
+			CameraBoom->TargetArmLength = CameraBoomMaxLength;
+		else if (CameraBoom->TargetArmLength < CameraBoomMinLength)
+			CameraBoom->TargetArmLength = CameraBoomMinLength;
+	}
 }
 
 void AMainCamera::RotateCamera(float Direction)
 {
 	CameraRotateDirection = Direction;
+}
+
+void AMainCamera::ZoomCamera(float Direction)
+{
+	CameraZoomDirection = Direction;
 }
 
 

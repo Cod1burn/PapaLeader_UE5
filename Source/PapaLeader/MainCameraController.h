@@ -29,16 +29,35 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* RotateAction;
 
+	/** Mouse input actions **/
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	class UInputAction* ZoomAction;
+
 	
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void SetupInputComponent() override;
 
+	virtual void Tick(float DeltaSeconds) override;
+
+	void CameraMove(const FVector2d &Direction);
+
 	/** Input handles for axis actions */
-	void CameraMove(const FInputActionValue &InputValue);
+	void KeyboardCameraMove(const FInputActionValue &InputValue);
 
 	void CameraRotateStart(const FInputActionValue &InputValue);
 
 	void CameraRotateEnd();
+
+	/** Input handles for mouse actions */
+	/**
+	 * Called by each frame to detect if the mouse cursor is inside the viewport
+	 * If the mouse is at the edge of the viewport, move the camera in that direction.
+	 */
+	void MouseCameraMove();
+
+	void CameraZoomStart(const FInputActionValue &InputValue);
+
+	void CameraZoomEnd();
 };
