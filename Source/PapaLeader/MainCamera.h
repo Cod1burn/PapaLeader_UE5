@@ -23,7 +23,7 @@ private:
 
 	float CameraZoomDirection;
 	const float CameraZoomSpeed = 800.f;
-	const float CameraZoomAngleSpeed = 20.f;
+	const float CameraZoomAngleSpeed = -30.f;
 	/** A list of camera zoom lengths and angles to be set **/
 	
 	std::vector<float> CameraZoomLengths;

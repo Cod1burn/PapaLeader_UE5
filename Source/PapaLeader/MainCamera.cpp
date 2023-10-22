@@ -72,9 +72,11 @@ void AMainCamera::Tick(float DeltaTime)
 	// Zoom in or out the camera boom smoothly
 	if (CameraZoomIndex != TargetZoomIndex)
 	{
-		CameraBoom->TargetArmLength = FMath::FInterpTo(CameraBoom->TargetArmLength, CameraZoomLengths[TargetZoomIndex], DeltaTime, CameraZoomSpeed);
+		CameraBoom->TargetArmLength = TargetZoomIndex > CameraZoomIndex ? FMath::Min(CameraBoom->TargetArmLength + DeltaTime * CameraZoomSpeed, CameraZoomLengths[TargetZoomIndex])
+		: FMath::Max(CameraBoom->TargetArmLength - DeltaTime * CameraZoomSpeed, CameraZoomLengths[TargetZoomIndex]);
 		FRotator Rotator = CameraBoom->GetRelativeRotation();
-		Rotator.Pitch = FMath::FInterpTo(Rotator.Pitch, CameraZoomAngles[TargetZoomIndex], DeltaTime, CameraZoomAngleSpeed);
+		Rotator.Pitch = TargetZoomIndex > CameraZoomIndex ? FMath::Max(Rotator.Pitch + DeltaTime * CameraZoomAngleSpeed, CameraZoomAngles[TargetZoomIndex])
+		: FMath::Min(Rotator.Pitch - DeltaTime * CameraZoomAngleSpeed, CameraZoomAngles[TargetZoomIndex]);
 		CameraBoom->SetRelativeRotation(Rotator);
 		if (CameraBoom->TargetArmLength == CameraZoomLengths[TargetZoomIndex] && Rotator.Pitch == CameraZoomAngles[TargetZoomIndex])
 		{
@@ -92,16 +94,18 @@ void AMainCamera::ZoomCamera(float Direction)
 {
 	if (Direction > 0.f)
 	{
-		if (TargetZoomIndex <= CameraZoomIndex && TargetZoomIndex < CameraZoomLengths.size() - 1)
+		if (TargetZoomIndex <= CameraZoomIndex && CameraZoomIndex < CameraZoomLengths.size() - 1)
 		{
 			TargetZoomIndex += 1;
+			UE_LOG(LogTemp, Display, TEXT("TargetZoomIndex: %d, CameraZoomIndex: %d"), TargetZoomIndex, CameraZoomIndex);
 		}
 	}
 	else if (Direction < 0.f)
 	{
-		if (TargetZoomIndex >= CameraZoomIndex && TargetZoomIndex > 0)
+		if (TargetZoomIndex >= CameraZoomIndex && CameraZoomIndex > 0)
 		{
 			TargetZoomIndex -= 1;
+			UE_LOG(LogTemp, Display, TEXT("TargetZoomIndex: %d, CameraZoomIndex: %d"), TargetZoomIndex, CameraZoomIndex);
 		}
 	}
 }
