@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "InputActionValue.h"
+#include "UnitsHandler.h"
 #include "GameFramework/PlayerController.h"
 #include "MainCameraController.generated.h"
 
@@ -58,4 +59,7 @@ protected:
 	void MouseCameraMove();
 
 	void CameraZoomStart(const FInputActionValue &InputValue);
+
+	/** Unit Handler */
+	UnitsHandler* UnitsHandler;
 };
